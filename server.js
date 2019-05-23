@@ -14,7 +14,15 @@ server.get('*', (req, res) => {
     template: `<div>訪問的 URL是: {{ url }}</div>`,
   })
 
-  renderer.renderToString(app, (err, html) => {
+  const context = {
+    title: 'Hello from server',
+    meta: `
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    `,
+  }
+
+  renderer.renderToString(app, context, (err, html) => {
     if (err) {
       res.status(500).end('Server Error')
       return
