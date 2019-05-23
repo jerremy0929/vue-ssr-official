@@ -1,7 +1,10 @@
-// const fs = require('fs')
+const fs = require('fs')
 const Vue = require('vue')
 const server = require('express')()
-const renderer = require('vue-server-renderer').createRenderer()
+const { createRenderer } = require('vue-server-renderer')
+const renderer = createRenderer({
+  template: fs.readFileSync('./public/index.html', 'utf-8'),
+})
 
 server.get('*', (req, res) => {
   const app = new Vue({
@@ -16,16 +19,7 @@ server.get('*', (req, res) => {
       res.status(500).end('Server Error')
       return
     }
-    res.end(
-      `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8"/>
-        <title>Hello SSR</title>
-      </head>
-      <body>${html}</body>
-      </html>`,
-    )
+    res.end(html)
   })
 })
 
